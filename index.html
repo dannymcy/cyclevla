@@ -160,9 +160,10 @@
       <!-- </video> -->
       <h2 class="subtitle has-text-centered">
         <b>TL;DR:</b> We introduce CycleVLA, a system that enables VLAs to anticipate incipient failures and recover before execution collapses. 
-        CycleVLA includes (a) a finetuning pipeline that extends VLAs with subtask progress prediction,
-        (b) a VLM-based failure predictor and planner that uses progress cues to decide if to transit or backtrack between subtasks, 
-        and (c) a MBR-based test-time scaling strategy that improves success after backtracking.
+        (a) CycleVLA first augments a VLA to estimate subtask-level progress and flag critical subtask transition points, where failures most frequently occur. 
+        (b) At these points during inference, a VLM is queried to predict whether the current execution will fail and to decide whether to backtrack. 
+        (c) Upon backtracking, the VLA retries using test-time scaling via Minimum Bayes Risk decoding to improve success. 
+        This cycle repeats until the task succeeds or execution terminates.
       </h2>
     </div>
   </div>
@@ -225,7 +226,7 @@
   <div class="hero-body">
     <div class="container">
       <!-- Paper video. -->
-      <h2 class="title is-3 has-text-centered">Framework Overview</h2>
+      <h2 class="title is-3 has-text-centered">Method Overview</h2>
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
 
@@ -233,15 +234,34 @@
             <!-- Youtube embed code here -->
             <!-- <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
            -->
-           <img src="static/images/framework.png" alt="Framework Overview"/>
+           <img src="static/images/pipeline.png" alt="Method Overview"/>
+
+           <div class="content has-text-justified">
+            <br>
+            <p>
+              <b>Motivation:</b> Current work on robot failure detection and correction typically operate in a post hoc manner, analyzing errors and applying corrections only after failures occur. Our goal is to equip VLAs with <i>proactive self-correction</i>, the capability to anticipate incipient failures and recover before they fully manifest during execution.
+            </p>
+          </div>
+
+          <div class="content has-text-justified">
+            <p>
+              <b>Key Insight:</b> Many robot task failures occur at subtask transitions, and that progress near subtask completion provides strong cues for anticipating such failures (e.g., one can tell a peg is misaligned before it jams during insertion).
+            </p>
+          </div>
 
            <div class="content has-text-justified">
              <p>
-              Our goal is to enable the study of continual HRC in open-ended tasks. 
-              To that end, we investigate how a robotic agent can become more effective in assisting humans by learning from their behavior. 
-              Central to COOPERA are LLM-powered simulated humans driven by traits and long-term intentions that the robot can reason for effective collaboration, 
-              and a human feedback mechanism for improving collaboration over time. 
-              COOPERA offers different collaborative tasks across various time-scales. 
+              <b>Approach:</b> CycleVLA first introduces (a) a finetuning pipeline that equips a VLA with subtask-level stop and progress prediction via extended action expert dimension and augmented subtask-decomposed training data. 
+              (b) At inference, predicted progress triggers a VLM-based failure predictor and planner, which decides whether to transit to the next subtask or backtrack, and selects the subtask to backtrack to. 
+              (c) After backtracking, the VLA retries execution using test-time scaling via MBR decoding to improve success.
+              <!-- For image scene understanding, we use VLM to describe objects by
+              appearance and 2D location, complemented by language-guided segmentation and repainting models
+              to obtain occlusion-free object masks. Elevating 2D understanding to coarse 3D, we use
+              metric depth estimation and perspective fields to estimate the 3D scene size and conduct perspective
+              canonicalization with VLM. For fine-grained 3D understanding, we partially reconstruct
+              the 3D scene, with the full 3D representation of foreground objects and the background as a plane.
+              With the reconstructed 3D scene, we summarize spatial information and prompt it to the VLM for
+              various downstream tasks. With the entire framework being fully modularized, each component can be easily replaced with the latest improvements within its specific domain.  -->
              </p>
            </div>
           </div>
@@ -257,7 +277,7 @@
   <div class="hero-body">
     <div class="container">
       <!-- Paper video. -->
-      <h2 class="title is-3 has-text-centered">Simulating Humans</h2>
+      <h2 class="title is-3 has-text-centered">Constructing a Subtask-Decomposed Dataset</h2>
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
 
@@ -265,14 +285,11 @@
             <!-- Youtube embed code here -->
             <!-- <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
            -->
-           <img src="static/images/human_simulation.png" alt="Human Simulation"/>
+           <img src="static/images/preprocessing_1.png" alt="Dataset Construction"/>
 
            <div class="content has-text-justified">
              <p>
-              We aim to model humans who interact in the environment over long periods of time, act driven by their goals, preferences, and context, 
-              and who can react and provide feedback as a robot assists them. To achieve this, 
-              we propose a hierarchical model that combines LLMs and 3D human motion to simulate long-term, 
-              realistic human behaviors in indoor environments.
+              To finetune a progress-aware VLA, we decompose demonstrations into aligned subtasks by computing gripper state segments and movement primitives from trajectories, while leveraging LLMs to propose subtask timestamps.
              </p>
            </div>
           </div>
@@ -282,41 +299,6 @@
   </div>
 </section>
 <!-- End youtube video -->
-
-
-<!-- Youtube video -->
-<section class="hero is-small" style="margin-top: 25px; margin-bottom: 25px;">
-  <div class="hero-body">
-    <div class="container">
-      <!-- Paper video. -->
-      <h2 class="title is-3 has-text-centered">Instantiating COOPERA with an Assistive Agent</h2>
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-
-          <!-- <div class="publication-video"> -->
-            <!-- Youtube embed code here -->
-            <!-- <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-           -->
-           <img src="static/images/method.png" alt="Building an Assistive Agent"/>
-
-           <div class="content has-text-justified">
-             <p>
-              To study COOPERA, we propose an approach for continual HRC, alongside benchmark methods. Our approach enables the robot to improve its assistive performance by learning
-              correlations between human intentions, tasks, traits, and temporal dependencies at each time of day. 
-             </p>
-           </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- End youtube video -->
-
-
-
-
-
 
 
 <section class="hero is-small" style="margin-top: 25px; margin-bottom: 25px;">
@@ -341,21 +323,28 @@
              </p> -->
 
               <!-- Experiment 1. -->
-              <h2 class="title is-4">Simulated Humans</h2>
+              <h2 class="title is-4">Proactive Self-Correction</h2>
                 <!-- <p>
                   We experiment on the basic form of spatial VQA introduced by SpatialVLM, Intra-Image Object Relations VQA (IaOR-VQA), 
                   as well as two new forms introduced by us: Intra-Image Angular Discrepancies VQA (IaAD-VQA) and Inter-Image Spatial Dynamics VQA (IrSD-VQA).
 
                   <br><br>In the figure below, we list some sample question and answer pairs generated by our pipeline.
                 </p> -->
+              <div class="columns is-centered has-text-centered" style="margin-bottom: -22px;">
+                <div class="column is-four-fifths">
+                   <img src="static/images/demo.png" alt="Proactive Self-Correction"  style="width: 100%; height: auto;" />
+                </div>
+              </div>
+  
               <div class="columns is-centered has-text-centered">
                 <div class="column is-four-fifths">
-                   <img src="static/images/human_demo.png" alt="Simulated Humans"  style="width: 100%; height: auto;" />
+                   <img src="static/images/demo_more.png" alt="Proactive Self-Correction_1"  style="width: 100%; height: auto;" />
                 </div>
               </div>
 
+
               <!-- Experiment 2. -->
-              <h2 class="title is-4">Human-Robot Collaboration</h2>
+              <h2 class="title is-4">Subtask-Decomposed Dataset</h2>
                 <!-- <p>
                   By partially reconstructing the 3D scene with visual alignments, our framework enables VLMs to use
                   tools like rapidly-exploring random tree star (RRT*) to generate accurate, collision-free paths
@@ -364,7 +353,7 @@
                 </p> -->
               <div class="columns is-centered has-text-centered">
                 <div class="column is-four-fifths">
-                   <img src="static/images/HRC.png" alt="Human-Robot Collaboration"/>
+                   <img src="static/images/decomposed_dataset.png" alt="Subtask-Decomposed Dataset"/>
                 </div>
               </div>
 
@@ -426,16 +415,10 @@
   <section class="section" id="BibTeX"  style="margin-top: 25px; margin-bottom: 25px;">
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
-      <!-- <pre><code>@inproceedings{ma2024COOPERA,
-  title={COOPERA: Enhancing Spatial Reasoning Capabilities of Vision-Language Models through Prompting and Interacting 3D Priors},
-  author={Ma, Chenyang and Lu, Kai and Cheng, Ta-Ying and Trigoni, Niki and Markham, Andrew},
-  booktitle={Proceedings of the Conference on Neural Information Processing Systems (NeurIPS)},
-  year={2024}
-}</code></pre> -->
-<pre><code>@inproceedings{ma2025coopera,
-  title={COOPERA: Continual Open-Ended Human-Robot Assistance},
-  author={Ma, Chenyang and Lu, Kai and Desai, Ruta and Puig, Xavier and Markham, Andrew and Trigoni, Niki},
-  booktitle = {Proceedings of the Conference on Neural Information Processing Systems (NeurIPS)},
+<pre><code>@article{ma2025cyclevla,
+  title={CycleVLA: Proactive Self-Correcting Vision-Language-Action Models via Subtask Backtracking and Minimum Bayes Risk Decoding},
+  author={Ma, Chenyang and Yang, Guangyu and Lu, Kai and Xu, Shitong and Byrne, Bill and Trigoni, Niki and Markham, Andrew},
+  journal={arXiv preprint arXiv:xxxx.xxxx},
   year={2025}
 }</code></pre>
     </div>
