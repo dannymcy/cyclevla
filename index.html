@@ -52,8 +52,8 @@
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">CycleVLA: Proactive Self-Correcting Vision-Language-Action Models via<br>Subtask Backtracking and Minimum Bayes Risk Decoding</h1>
-              <!-- <h2> <font size="+2.5"> NeurIPS 2025 (Spotlight) </font></h1> -->
+            <h1 class="title is-1 publication-title">CycleVLA: Proactive Self-Correcting Vision-Language-Action Models via Subtask Backtracking and Minimum Bayes Risk Decoding</h1>
+              <h2> <font size="+2.5"> Preprint </font></h1>
                 <br>
                 
                 <div class="is-size-5 publication-authors">
@@ -119,7 +119,7 @@
                 </span>
 
                   <span class="link-block">
-                    <a href="https://github.com/dannymcy/coopera_code" target="_blank"
+                    <a href="https://github.com/dannymcy/cyclevla_code" target="_blank"
                     class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fab fa-github"></i>
@@ -151,7 +151,7 @@
         <!-- <video controls autoplay muted loop>
           <source src="static/videos/teaser_vid.mp4" type="video/mp4"> -->
         </video>
-          <img src="static/images/teaser.jpg" alt="COOPERA"/>
+          <img src="static/images/teaser.png" alt="CycleVLA"/>
 
           <!-- <video controls loop>
             <source src="static/images/teaser_vid.mov">
@@ -159,10 +159,10 @@
           </video> -->
       <!-- </video> -->
       <h2 class="subtitle has-text-centered">
-        <b>TL;DR:</b> We introduce COOPERA, a framework for studying continual, open-ended human-robot collaboration. 
-        COOPERA includes (a) simulated humans driven by psychological traits and long-term intentions,
-        (b) continuous human feedback, 
-        and (c) a benchmark and approach to personalize the robot's collaborative actions.
+        <b>TL;DR:</b> We introduce CycleVLA, a system that enables VLAs to anticipate incipient failures and recover before execution collapses. 
+        CycleVLA includes (a) a finetuning pipeline that extends VLAs with subtask progress prediction,
+        (b) a VLM-based failure predictor and planner that uses progress cues to decide if to transit or backtrack between subtasks, 
+        and (c) a MBR-based test-time scaling strategy that improves success after backtracking.
       </h2>
     </div>
   </div>
@@ -178,7 +178,7 @@
           <h2 class="title is-3">Video</h2>
           <div class="publication-video">
             <iframe width="100%" height="400" 
-              src="https://www.youtube.com/embed/vgMbFhCkh9c" 
+              src="https://www.youtube.com/embed/9wRYdksmS6s" 
               frameborder="0" 
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
               allowfullscreen>
@@ -195,18 +195,17 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
+        <h2 class="title is-3">Abstract</h2> 
         <div class="content has-text-justified">
-          <p>
-            To understand and collaborate with humans, robots must account for individual human traits, habits, and activities over time. 
-            However, most robotic assistants lack these abilities, as they primarily focus on predefined tasks in structured environments and 
-            lack a human model to learn from. This work introduces <b>COOPERA</b>, a novel framework for <b>CO</b>ntinual, 
-            <b>OP</b>en-<b>E</b>nded human-<b>R</b>obot <b>A</b>ssistance, where simulated humans, driven by psychological traits 
-            and long-term intentions, interact with robots in complex environments. By integrating continuous human feedback, our framework, 
-            for the first time, enables the study of long-term, open-ended human-robot collaboration (HRC) in different collaborative tasks 
-            across various time-scales. Within COOPERA, we introduce a benchmark and an approach to personalize the robot's collaborative actions 
-            by learning human traits and context-dependent intents. Experiments validate the realism of our simulated humans and demonstrate the value 
-            of inferring and personalizing to human intents for open-ended and long-term HRC.          
+          <p> 
+            Current work on robot failure detection and correction typically operate in a post hoc manner, analyzing errors and applying corrections only after failures occur. 
+            This work introduces <b>CycleVLA</b>, a system that equips Vision-Language-Action models (VLAs) with proactive self-correction, 
+            the capability to anticipate incipient failures and recover before they fully manifest during execution. 
+            CycleVLA achieves this by integrating a progress-aware VLA that flags critical subtask transition points where failures most frequently occur, 
+            a VLM-based failure predictor and planner that triggers subtask backtracking upon predicted failure, 
+            and a test-time scaling strategy based on Minimum Bayes Risk (MBR) decoding to improve retry success after backtracking. 
+            Extensive experiments show that CycleVLA improves performance for both well-trained and under-trained VLAs, 
+            and that MBR serves as an effective zero-shot test-time scaling strategy for VLAs.        
           </p>
         </div>
       </div>
@@ -234,7 +233,7 @@
             <!-- Youtube embed code here -->
             <!-- <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
            -->
-           <img src="static/images/framework.jpg" alt="Framework Overview"/>
+           <img src="static/images/framework.png" alt="Framework Overview"/>
 
            <div class="content has-text-justified">
              <p>
@@ -266,7 +265,7 @@
             <!-- Youtube embed code here -->
             <!-- <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
            -->
-           <img src="static/images/human_simulation.jpg" alt="Human Simulation"/>
+           <img src="static/images/human_simulation.png" alt="Human Simulation"/>
 
            <div class="content has-text-justified">
              <p>
@@ -298,7 +297,7 @@
             <!-- Youtube embed code here -->
             <!-- <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
            -->
-           <img src="static/images/method.jpg" alt="Building an Assistive Agent"/>
+           <img src="static/images/method.png" alt="Building an Assistive Agent"/>
 
            <div class="content has-text-justified">
              <p>
@@ -351,7 +350,7 @@
                 </p> -->
               <div class="columns is-centered has-text-centered">
                 <div class="column is-four-fifths">
-                   <img src="static/images/human_demo.jpg" alt="Simulated Humans"  style="width: 100%; height: auto;" />
+                   <img src="static/images/human_demo.png" alt="Simulated Humans"  style="width: 100%; height: auto;" />
                 </div>
               </div>
 
@@ -365,7 +364,7 @@
                 </p> -->
               <div class="columns is-centered has-text-centered">
                 <div class="column is-four-fifths">
-                   <img src="static/images/HRC.jpg" alt="Human-Robot Collaboration"/>
+                   <img src="static/images/HRC.png" alt="Human-Robot Collaboration"/>
                 </div>
               </div>
 
