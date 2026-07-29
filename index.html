@@ -173,11 +173,8 @@
           </video> -->
       <!-- </video> -->
       <h2 class="subtitle has-text-centered">
-        <b>TL;DR:</b> We introduce CycleVLA, a system that enables VLAs to anticipate incipient failures and recover before execution collapses. 
-        (a) CycleVLA first augments a VLA to estimate subtask-level progress and flag critical subtask transition points, where failures most frequently occur. 
-        (b) At these points during inference, a VLM is queried to predict whether the current execution will fail and to decide whether to backtrack. 
-        (c) Upon backtracking, the VLA retries using test-time scaling via Minimum Bayes Risk decoding to improve success. 
-        This cycle repeats until the task succeeds or execution terminates.
+        <b>TL;DR:</b> We introduce CycleVLA, a system that enables VLAs to anticipate incipient failures, backtrack, and recover before execution collapses. 
+        CycleVLA corrects both natural failures arising from the robot's own execution and human-injected errors such as displaced or swapped objects.
       </h2>
     </div>
   </div>
